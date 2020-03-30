@@ -25,6 +25,7 @@
     "babel-plugin-inline-dotenv": "^1.2.2",
     "body-parser": "^1.18.3",
     "cluster": "^0.7.7",
+    "dotenv":"*",
     "express": "^4.16.4",
     "jest-environment-node": "^25.1.0",
     "mongodb": "^3.5.5",
