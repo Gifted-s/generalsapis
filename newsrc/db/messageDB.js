@@ -14,7 +14,8 @@ function makeMessageDB({
     deleteMessage,
     editMessage,
     insertMessage,
-    listMessages
+    listMessages,
+    handlesFeedback
   });
 
   async function listMessages() {
@@ -75,5 +76,16 @@ function makeMessageDB({
       id
     });
     return query.deletedCount;
+  }
+
+  async function handlesFeedback({
+    feedback
+  }) {
+    const db = await makeDB();
+    const query = await db.collection('feedbacks').insertOne({
+      feedback
+    });
+    const resultObject = await query.ops[0];
+    return resultObject;
   }
 }

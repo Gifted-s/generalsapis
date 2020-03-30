@@ -3,26 +3,25 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = buildDeleteMessageController;
+exports.default = makeHandlesFeedBackMessageController;
 
-function buildDeleteMessageController({
-  deleteMessage
+function makeHandlesFeedBackMessageController({
+  handlesFeedback
 }) {
-  return async function deleteMessageController(httpRequest) {
+  return async function handlesFeedBackController(httpRequest) {
+    const feedbackBody = httpRequest.body;
+    console.log(feedbackBody);
     const headers = {
       'Content-Type': 'application/json'
     };
 
     try {
-      const id = httpRequest.params.id;
-      const result = await deleteMessage({
-        id
-      });
+      const feedBackresult = await handlesFeedback(feedbackBody);
       return {
         headers,
         status: 200,
         body: {
-          deleted: result
+          feedBackresult
         }
       };
     } catch (err) {
@@ -31,7 +30,7 @@ function buildDeleteMessageController({
         headers,
         status: 400,
         body: {
-          deleteFailed: err.message
+          error: err.message
         }
       };
     }

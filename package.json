@@ -5,14 +5,15 @@
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/.bin/netlify-lambda build newsrc",
-    "now-build": "",
+    "now-build": "npm run clean &&  babel src -d newsrc ",
     "clean": "rimraf newsrc",
+    "start-dev":"node ./newsrc/index",
     "db": "babel-node ./db/index.js",
     "dev": "nodemon --exec babel-node  ./src/index.js",
     "start": "./node_modules/.bin/netlify-lambda serve newsrc ",
     "test": "jest src --watch",
     "start-production": "./node_modules/.bin/netlify-lambda serve app",
-    "test:e2e": "npm run clean && npm run build && cd newsrc && node index.js "
+    "testdev": "npm run clean && npm run build && cd newsrc && node index.js "
   },
   "author": "Adewumi Sunkanmi <sunkanmiadewumi@gmail.com>",
   "license": "MIT",

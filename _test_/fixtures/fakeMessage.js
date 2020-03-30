@@ -14,3 +14,10 @@ export default function makeFakeMessage (override) {
     ...fakeMessage, ...override
   }
 }
+function makeFakeFeedbackMessage (override) {
+  const fakeFeedbackMessage = {
+    feedback: faker.lorem.paragraph(1)
+  }
+  return { ...fakeFeedbackMessage, ...override }
+}
+export { makeFakeFeedbackMessage }

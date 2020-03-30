@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.listMessages = exports.deleteMessage = exports.editMessage = exports.fetchMessage = exports.addMessage = exports.default = void 0;
+exports.listMessages = exports.deleteMessage = exports.editMessage = exports.handlesFeedbackMessage = exports.fetchMessage = exports.addMessage = exports.default = void 0;
 
 var _db = _interopRequireDefault(require("../db"));
 
@@ -16,6 +16,8 @@ var _editMessage = _interopRequireDefault(require("./editMessage"));
 var _deleteMessage = _interopRequireDefault(require("./deleteMessage"));
 
 var _listMessages = _interopRequireDefault(require("./listMessages"));
+
+var _handlesFeedBack = _interopRequireDefault(require("./handlesFeedBack"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31,6 +33,10 @@ const fetchMessage = (0, _fetchMessage.default)({
   messageDB: _db.default
 });
 exports.fetchMessage = fetchMessage;
+const handlesFeedbackMessage = (0, _handlesFeedBack.default)({
+  messageDB: _db.default
+});
+exports.handlesFeedbackMessage = handlesFeedbackMessage;
 const editMessage = (0, _editMessage.default)({
   messageDB: _db.default
 });
@@ -43,6 +49,7 @@ const Services = Object.freeze({
   addMessage,
   fetchMessage,
   deleteMessage,
+  handlesFeedbackMessage,
   editMessage,
   listMessages
 });

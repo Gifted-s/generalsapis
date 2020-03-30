@@ -58,13 +58,13 @@ const swaggerOptions = {
 
       > Documentation - Swagger,
       `,
-      servers: ['http://localhost:3000']
+      servers: ['http://localhost:9000']
     }
   },
   apis: ['index.js']
 }
 const swaggerDocs = (0, _swaggerJsdoc.default)(swaggerOptions)
-app.use('/docs', _swaggerUiExpress.default.serve, _swaggerUiExpress.default.setup(swaggerDocs))
+
 app.use(_bodyParser.default.json())
 app.use(_bodyParser.default.urlencoded({
   extended: false
@@ -74,6 +74,7 @@ const endpoint = process && process.env && process.env.endpoint || '/messageapi'
 app.listen(PORT, () => {
   console.log(`Message Miscroservice Listening at Port ${PORT}`)
 })
+router.use(`/docs`, _swaggerUiExpress.default.serve, _swaggerUiExpress.default.setup(swaggerDocs))
 router.get(`${endpoint}/`, (req, res) => {
   res.status(200).send('hitting me')
 }) // app.all('/*', (req, res) => {
@@ -85,7 +86,7 @@ router.get(`${endpoint}/l`, (req, res) => {
 })
 /**
 * @swagger
-* /messageapi/getmessage/:id :
+* /getmessage/:id :
 *    get:
 *       tags:
 *         - Handles fetching a particular message
@@ -112,7 +113,7 @@ router.get(`${endpoint}/l`, (req, res) => {
 router.get(`${endpoint}/getmessage/:id`, (0, _makeCallback.default)(_controllers.getMessageController))
 /**
 * @swagger
-* /messageapi/listmessages :
+* /.netlify/functions/index/messageapi/listmessages :
 *    get:
 *       tags:
 *         - Handles the fetching of all the message objects
@@ -128,7 +129,7 @@ router.get(`${endpoint}/getmessage/:id`, (0, _makeCallback.default)(_controllers
 router.get(`${endpoint}/listmessages`, (0, _makeCallback.default)(_controllers.listMessagesController))
 /**
 * @swagger
-* /messageapi/editmessage/:id :
+* /.netlify/functions/index/messageapi/editmessage/:id :
 *    patch:
 *       tags:
 *         - Handles editing a particular message
@@ -149,7 +150,7 @@ router.get(`${endpoint}/listmessages`, (0, _makeCallback.default)(_controllers.l
 router.patch(`${endpoint}/editmessage/:id`, (0, _makeCallback.default)(_controllers.editMessageController))
 /**
 * @swagger
-* /messageapi/deletemessage/:id :
+* /.netlify/functions/index/messageapi/deletemessage/:id :
 *    delete:
 *       tags:
 *          - Handles the deletion of a message
@@ -171,7 +172,7 @@ router.patch(`${endpoint}/editmessage/:id`, (0, _makeCallback.default)(_controll
 router.delete(`${endpoint}/deletemessage/:id`, (0, _makeCallback.default)(_controllers.deleteMessageController))
 /**
 * @swagger
-* /messageapi/addmessage:
+* /.netlify/functions/index/messageapi/addmessage:
 *    post:
 *       tags:
 *          - Handles the adding of message to the database
@@ -189,7 +190,7 @@ router.delete(`${endpoint}/deletemessage/:id`, (0, _makeCallback.default)(_contr
 router.post(`${endpoint}/addmessage`, (0, _makeCallback.default)(_controllers.putMessageController))
 /**
 * @swagger
-* /messageapi/downloadmessage/:id/:play :
+* /.netlify/functions/index/messageapi/downloadmessage/:id/:play :
 *    get:
 *       tags:
 *         - Handles downloading of message or streaming a message
@@ -216,12 +217,8 @@ router.post(`${endpoint}/addmessage`, (0, _makeCallback.default)(_controllers.pu
 *
 */
 
+router.post(`${endpoint}/feedback`, (0, _makeCallback.default)(_controllers.handlesFeedBackController))
 router.get(`${endpoint}/download/:id/:play`, (0, _makeCallback.default)(_controllers.downloadMesageController))
 app.use('/.netlify/functions/index', router)
-// var _default = {
-//   handler:
-// };
-// exports.default.handler = (0, _serverlessHttp.default)(app);
 
-// module.exports.handler = (0, _serverlessHttp.default)(app);
 module.exports.handler = (0, _serverlessHttp.default)(app)

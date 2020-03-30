@@ -5,7 +5,8 @@ export default function makeMessageDB ({ makeDB, date_Module }) {
     deleteMessage,
     editMessage,
     insertMessage,
-    listMessages
+    listMessages,
+    handlesFeedback
 
   })
   async function listMessages () {
@@ -40,5 +41,12 @@ export default function makeMessageDB ({ makeDB, date_Module }) {
     const db = await makeDB()
     const query = await db.collection('messages').deleteOne({ id })
     return query.deletedCount
+  }
+
+  async function handlesFeedback ({ feedback }) {
+    const db = await makeDB()
+    const query = await db.collection('feedbacks').insertOne({ feedback })
+    const resultObject = await query.ops[0]
+    return resultObject
   }
 }

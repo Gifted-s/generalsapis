@@ -1,13 +1,20 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
-import { getMessageController, editMessageController, listMessagesController, deleteMessageController, putMessageController, downloadMesageController } from './controllers'
+import { getMessageController,
+  editMessageController,
+  listMessagesController,
+  deleteMessageController,
+  putMessageController,
+  downloadMesageController,
+  handlesFeedBackController } from './controllers'
 import makeCallback from './express-callback/makeCallback'
 import swaggerUi from 'swagger-ui-express'
 import swaggerJsDoc from 'swagger-jsdoc'
 import serverless from 'serverless-http'
 dotenv.config()
 const app = express()
+
 const router = express.Router()
 const swaggerOptions = {
   swaggerDefinition: {
@@ -47,7 +54,7 @@ const swaggerOptions = {
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions)
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: false
@@ -61,6 +68,7 @@ app.listen(PORT, () => {
 router.get(`${endpoint}/`, (req, res) => {
   res.status(200).send('hitting me')
 })
+router.use(`${endpoint}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 // app.all('/*', (req, res) => {
 //   res.send('hello from' + process.pid)
 // })
@@ -198,6 +206,7 @@ router.post(`${endpoint}/addmessage`, makeCallback(putMessageController))
 
 *
 */
+router.post(`${endpoint}/feedback`, makeCallback(handlesFeedBackController))
 router.get(`${endpoint}/download/:id/:play`, makeCallback(downloadMesageController))
 app.use('/.netlify/functions/index', router)
 export default { handler: serverless(app) }

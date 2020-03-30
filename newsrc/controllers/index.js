@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.downloadMesageController = exports.editMessageController = exports.putMessageController = exports.listMessagesController = exports.getMessageController = exports.deleteMessageController = exports.default = void 0;
+exports.downloadMesageController = exports.editMessageController = exports.handlesFeedBackController = exports.putMessageController = exports.listMessagesController = exports.getMessageController = exports.deleteMessageController = exports.default = void 0;
 
 var _deleteMessageController = _interopRequireDefault(require("./deleteMessageController"));
 
@@ -19,6 +19,8 @@ var _listMessagesController = _interopRequireDefault(require("./listMessagesCont
 
 var _downloadMessageController = _interopRequireDefault(require("./downloadMessageController"));
 
+var _handlesFeedBackController = _interopRequireDefault(require("./handlesFeedBackController"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const {
@@ -26,6 +28,7 @@ const {
   deleteMessage,
   editMessage,
   fetchMessage,
+  handlesFeedbackMessage,
   listMessages
 } = _useCases.default;
 const listMessagesController = (0, _listMessagesController.default)({
@@ -40,6 +43,10 @@ const getMessageController = (0, _getMessageController.default)({
   fetchMessage
 });
 exports.getMessageController = getMessageController;
+const handlesFeedBackController = (0, _handlesFeedBackController.default)({
+  handlesFeedback: handlesFeedbackMessage
+});
+exports.handlesFeedBackController = handlesFeedBackController;
 const downloadMesageController = (0, _downloadMessageController.default)({
   fetchMessage
 });
@@ -58,7 +65,8 @@ const Controller = Object.freeze({
   putMessageController,
   editMessageController,
   listMessagesController,
-  downloadMesageController
+  downloadMesageController,
+  handlesFeedBackController
 });
 var _default = Controller;
 exports.default = _default;

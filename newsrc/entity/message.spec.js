@@ -11,19 +11,19 @@ describe('message', () => {
     const fakeMessage = (0, _fakeMessage.default)({
       name: null
     });
-    expect(() => (0, _.default)(fakeMessage)).toThrow('Please enter the name of the message');
+    expect(() => (0, _.default)(fakeMessage)).toThrow('Please enter the name or title of the message');
   });
   it('message name must be longer that 2 characters ', () => {
     const fakeMessage = (0, _fakeMessage.default)({
       name: 'A'
     });
-    expect(() => (0, _.default)(fakeMessage)).toThrow('The name of the message is too short');
+    expect(() => (0, _.default)(fakeMessage)).toThrow('The title of the message is too short');
   });
   it('must have a source ', () => {
     const fakeMessage = (0, _fakeMessage.default)({
       messageUri: null
     });
-    expect(() => (0, _.default)(fakeMessage)).toThrow('Message must have a source or uri, e.g http://mesage1.mp3');
+    expect(() => (0, _.default)(fakeMessage)).toThrow('Message must have a source or uri (firebase), e.g http://firebase.gs.joshuaselman.com');
   });
   it('must have a category', () => {
     const fakeMessage = (0, _fakeMessage.default)({
@@ -31,7 +31,7 @@ describe('message', () => {
     });
     expect(() => (0, _.default)(fakeMessage)).toThrow('Message must have a category, please enter the category, e.g Spiritual');
   });
-  it('message name must be shorter that 2 characters ', () => {
+  it('message category must be longer than 2 characters ', () => {
     const fakeMessage = (0, _fakeMessage.default)({
       category: 'A'
     });
