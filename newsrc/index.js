@@ -1,14 +1,34 @@
-import express from 'express'
-import bodyParser from 'body-parser'
-import dotenv from 'dotenv'
-import { getMessageController, editMessageController, listMessagesController, deleteMessageController, putMessageController, downloadMesageController } from './controllers'
-import makeCallback from './express-callback/makeCallback'
-import swaggerUi from 'swagger-ui-express'
-import swaggerJsDoc from 'swagger-jsdoc'
-import serverless from 'serverless-http'
-dotenv.config()
-const app = express()
-const router = express.Router()
+'use strict'
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+})
+exports.default = void 0
+
+var _express = _interopRequireDefault(require('express'))
+
+var _bodyParser = _interopRequireDefault(require('body-parser'))
+
+var _dotenv = _interopRequireDefault(require('dotenv'))
+
+var _controllers = require('./controllers')
+
+var _makeCallback = _interopRequireDefault(require('./express-callback/makeCallback'))
+
+var _swaggerUiExpress = _interopRequireDefault(require('swagger-ui-express'))
+
+var _swaggerJsdoc = _interopRequireDefault(require('swagger-jsdoc'))
+
+var _serverlessHttp = _interopRequireDefault(require('serverless-http'))
+
+function _interopRequireDefault (obj) { return obj && obj.__esModule ? obj : { default: obj } }
+
+_dotenv.default.config()
+
+const app = (0, _express.default)()
+
+const router = _express.default.Router()
+
 const swaggerOptions = {
   swaggerDefinition: {
     info: {
@@ -40,30 +60,26 @@ const swaggerOptions = {
       `,
       servers: ['http://localhost:3000']
     }
-
   },
   apis: ['index.js']
 }
-
-const swaggerDocs = swaggerJsDoc(swaggerOptions)
-
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({
+const swaggerDocs = (0, _swaggerJsdoc.default)(swaggerOptions)
+app.use('/docs', _swaggerUiExpress.default.serve, _swaggerUiExpress.default.setup(swaggerDocs))
+app.use(_bodyParser.default.json())
+app.use(_bodyParser.default.urlencoded({
   extended: false
 }))
-const PORT = process.env.PORT
-const endpoint = process.env.endpoint
+const PORT = process && process.env && process.env.PORT || '3000'
+const endpoint = process && process.env && process.env.endpoint || '/messageapi'
 app.listen(PORT, () => {
   console.log(`Message Miscroservice Listening at Port ${PORT}`)
 })
-
 router.get(`${endpoint}/`, (req, res) => {
   res.status(200).send('hitting me')
-})
-// app.all('/*', (req, res) => {
+}) // app.all('/*', (req, res) => {
 //   res.send('hello from' + process.pid)
 // })
+
 router.get(`${endpoint}/l`, (req, res) => {
   console.log('listening')
 })
@@ -92,8 +108,8 @@ router.get(`${endpoint}/l`, (req, res) => {
 
 *
 */
-router.get(`${endpoint}/getmessage/:id`, makeCallback(getMessageController))
 
+router.get(`${endpoint}/getmessage/:id`, (0, _makeCallback.default)(_controllers.getMessageController))
 /**
 * @swagger
 * /messageapi/listmessages :
@@ -108,8 +124,8 @@ router.get(`${endpoint}/getmessage/:id`, makeCallback(getMessageController))
              description: An internal server Error occured
 *
 */
-router.get(`${endpoint}/listmessages`, makeCallback(listMessagesController))
 
+router.get(`${endpoint}/listmessages`, (0, _makeCallback.default)(_controllers.listMessagesController))
 /**
 * @swagger
 * /messageapi/editmessage/:id :
@@ -129,8 +145,8 @@ router.get(`${endpoint}/listmessages`, makeCallback(listMessagesController))
              description: An internal server Error occured
 *
 */
-router.patch(`${endpoint}/editmessage/:id`, makeCallback(editMessageController))
 
+router.patch(`${endpoint}/editmessage/:id`, (0, _makeCallback.default)(_controllers.editMessageController))
 /**
 * @swagger
 * /messageapi/deletemessage/:id :
@@ -151,8 +167,8 @@ router.patch(`${endpoint}/editmessage/:id`, makeCallback(editMessageController))
              description: An internal server Error occured
 *
 */
-router.delete(`${endpoint}/deletemessage/:id`, makeCallback(deleteMessageController))
 
+router.delete(`${endpoint}/deletemessage/:id`, (0, _makeCallback.default)(_controllers.deleteMessageController))
 /**
 * @swagger
 * /messageapi/addmessage:
@@ -169,7 +185,8 @@ router.delete(`${endpoint}/deletemessage/:id`, makeCallback(deleteMessageControl
              description: An internal server Error occured
 *
 */
-router.post(`${endpoint}/addmessage`, makeCallback(putMessageController))
+
+router.post(`${endpoint}/addmessage`, (0, _makeCallback.default)(_controllers.putMessageController))
 /**
 * @swagger
 * /messageapi/downloadmessage/:id/:play :
@@ -198,6 +215,13 @@ router.post(`${endpoint}/addmessage`, makeCallback(putMessageController))
 
 *
 */
-router.get(`${endpoint}/download/:id/:play`, makeCallback(downloadMesageController))
+
+router.get(`${endpoint}/download/:id/:play`, (0, _makeCallback.default)(_controllers.downloadMesageController))
 app.use('/.netlify/functions/index', router)
-export default { handler: serverless(app) }
+// var _default = {
+//   handler:
+// };
+// exports.default.handler = (0, _serverlessHttp.default)(app);
+
+// module.exports.handler = (0, _serverlessHttp.default)(app);
+module.exports.handler = (0, _serverlessHttp.default)(app)

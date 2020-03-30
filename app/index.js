@@ -1,24 +1,24 @@
-"use strict";
+'use strict'
 
-var _express = _interopRequireDefault(require("express"));
+var _express = _interopRequireDefault(require('express'))
+var _serverless = _interopRequireDefault(require('serverless-http'))
+var _bodyParser = _interopRequireDefault(require('body-parser'))
+var _router = _express.Router()
+var _dotenv = _interopRequireDefault(require('dotenv'))
 
-var _bodyParser = _interopRequireDefault(require("body-parser"));
+var _controllers = require('./controllers')
 
-var _dotenv = _interopRequireDefault(require("dotenv"));
+var _makeCallback = _interopRequireDefault(require('./express-callback/makeCallback'))
 
-var _controllers = require("./controllers");
+var _swaggerUiExpress = _interopRequireDefault(require('swagger-ui-express'))
 
-var _makeCallback = _interopRequireDefault(require("./express-callback/makeCallback"));
+var _swaggerJsdoc = _interopRequireDefault(require('swagger-jsdoc'))
 
-var _swaggerUiExpress = _interopRequireDefault(require("swagger-ui-express"));
+function _interopRequireDefault (obj) { return obj && obj.__esModule ? obj : { default: obj } }
 
-var _swaggerJsdoc = _interopRequireDefault(require("swagger-jsdoc"));
+_dotenv.default.config()
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_dotenv.default.config();
-
-const app = (0, _express.default)();
+const app = (0, _express.default)()
 const swaggerOptions = {
   swaggerDefinition: {
     info: {
@@ -52,27 +52,27 @@ const swaggerOptions = {
     }
   },
   apis: ['index.js']
-};
-const swaggerDocs = (0, _swaggerJsdoc.default)(swaggerOptions);
-app.use('/docs', _swaggerUiExpress.default.serve, _swaggerUiExpress.default.setup(swaggerDocs));
-app.use(_bodyParser.default.json());
-app.use(_bodyParser.default.urlencoded({
+}
+const swaggerDocs = (0, _swaggerJsdoc.default)(swaggerOptions)
+_router.use('/docs', _swaggerUiExpress.default.serve, _swaggerUiExpress.default.setup(swaggerDocs))
+_router.use(_bodyParser.default.json())
+_router.use(_bodyParser.default.urlencoded({
   extended: false
-}));
-const PORT = process && process.env && process.env.PORT || "3000";
-const endpoint = process && process.env && process.env.endpoint || "/messageapi";
-app.listen(PORT, () => {
-  console.log(`Message Miscroservice Listening at Port ${PORT}`);
-});
-app.get(`${endpoint}/`, (req, res) => {
-  res.status(200).send('hitting me');
-}); // app.all('/*', (req, res) => {
+}))
+const PORT = process && process.env && process.env.PORT || '3000'
+const endpoint = process && process.env && process.env.endpoint || '/messageapi'
+// app.listen(PORT, () => {
+//   console.log(`Message Miscroservice Listening at Port ${PORT}`)
+// })
+_router.get(`${endpoint}/`, (req, res) => {
+  res.status(200).send('hitting me')
+}) // app.all('/*', (req, res) => {
 //   res.send('hello from' + process.pid)
 // })
 
-app.get(`${endpoint}/l`, (req, res) => {
-  console.log('listening');
-});
+_router.get(`${endpoint}/l`, (req, res) => {
+  console.log('listening')
+})
 /**
 * @swagger
 * /messageapi/getmessage/:id :
@@ -99,7 +99,7 @@ app.get(`${endpoint}/l`, (req, res) => {
 *
 */
 
-app.get(`${endpoint}/getmessage/:id`, (0, _makeCallback.default)(_controllers.getMessageController));
+_router.get(`${endpoint}/getmessage/:id`, (0, _makeCallback.default)(_controllers.getMessageController))
 /**
 * @swagger
 * /messageapi/listmessages :
@@ -115,7 +115,7 @@ app.get(`${endpoint}/getmessage/:id`, (0, _makeCallback.default)(_controllers.ge
 *
 */
 
-app.get(`${endpoint}/listmessages`, (0, _makeCallback.default)(_controllers.listMessagesController));
+_router.get(`${endpoint}/listmessages`, (0, _makeCallback.default)(_controllers.listMessagesController))
 /**
 * @swagger
 * /messageapi/editmessage/:id :
@@ -136,7 +136,7 @@ app.get(`${endpoint}/listmessages`, (0, _makeCallback.default)(_controllers.list
 *
 */
 
-app.patch(`${endpoint}/editmessage/:id`, (0, _makeCallback.default)(_controllers.editMessageController));
+_router.patch(`${endpoint}/editmessage/:id`, (0, _makeCallback.default)(_controllers.editMessageController))
 /**
 * @swagger
 * /messageapi/deletemessage/:id :
@@ -158,7 +158,7 @@ app.patch(`${endpoint}/editmessage/:id`, (0, _makeCallback.default)(_controllers
 *
 */
 
-app.delete(`${endpoint}/deletemessage/:id`, (0, _makeCallback.default)(_controllers.deleteMessageController));
+_router.delete(`${endpoint}/deletemessage/:id`, (0, _makeCallback.default)(_controllers.deleteMessageController))
 /**
 * @swagger
 * /messageapi/addmessage:
@@ -176,7 +176,7 @@ app.delete(`${endpoint}/deletemessage/:id`, (0, _makeCallback.default)(_controll
 *
 */
 
-app.post(`${endpoint}/addmessage`, (0, _makeCallback.default)(_controllers.putMessageController));
+_router.post(`${endpoint}/addmessage`, (0, _makeCallback.default)(_controllers.putMessageController))
 /**
 * @swagger
 * /messageapi/downloadmessage/:id/:play :
@@ -206,4 +206,6 @@ app.post(`${endpoint}/addmessage`, (0, _makeCallback.default)(_controllers.putMe
 *
 */
 
-app.get(`${endpoint}/download/:id/:play`, (0, _makeCallback.default)(_controllers.downloadMesageController));
+_router.get(`${endpoint}/download/:id/:play`, (0, _makeCallback.default)(_controllers.downloadMesageController))
+app.use('/.netlify/functions/index/', _router)
+module.exports.handler = _serverless(app)
