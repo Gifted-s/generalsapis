@@ -1,0 +1,53 @@
+{
+  "name": "GodsWill",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run clean && babel src -d dist",
+    "now-build": "npm run build",
+    "clean": "rimraf dist",
+    "db": "babel-node ./db/index.js",
+    "dev": "nodemon --exec babel-node  ./src/index.js",
+    "start": "npm run clean && npm run build && cd dist && node ./index.js",
+    "test": "jest src --watch",
+    "start-production": "node ./dist/index.js",
+    "test:e2e": "jest ./__test__ --runInBand"
+  },
+  "author": "Adewumi Sunkanmi <sunkanmiadewumi@gmail.com>",
+  "license": "MIT",
+  "jest": {
+    "verbose": false
+  },
+  "dependencies": {
+    "@devmastery/pipe": "^0.0.6",
+    "axios": "^0.18.0",
+    "babel-plugin-inline-dotenv": "^1.2.2",
+    "body-parser": "^1.18.3",
+    "cluster": "^0.7.7",
+    "express": "^4.16.4",
+    "jest-environment-node": "^25.1.0",
+    "mongodb": "^3.5.5",
+    "swagger-jsdoc": "^4.0.0",
+    "swagger-ui-express": "^4.1.4",
+    "rimraf": "^2.6.3"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.3.4",
+    "babel-jest": "^24.4.0",
+    "dotenv": "^6.2.0",
+    "eslint": "^5.15.1",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "faker": "^4.1.0",
+    "jest": "^24.3.1",
+    "nodemon": "^1.18.10",
+    "rimraf": "^2.6.3"
+  }
+}
