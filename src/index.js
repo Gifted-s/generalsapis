@@ -19,13 +19,13 @@ const router = express.Router()
 const swaggerOptions = {
   swaggerDefinition: {
     info: {
-      title: 'Message Api for the General Mobile application',
+      title: 'Message Api for the Generals Mobile application',
       contact: {
         name: 'Adewumi Sunkanmi',
         email: 'sunkanmiadewumi1@gmail.com',
         phone_number: '0703185081'
       },
-      description: `This api was designed to handle every request from to the Generals Mobile application.
+      description: `This api was designed to handle every request from and to the Generals Mobile application.
        
       TECHNOLOGY USED :
 
@@ -45,15 +45,14 @@ const swaggerOptions = {
 
       > Documentation - Swagger,
       `,
-      servers: ['http://localhost:3000']
+      servers: ['http://localhost:9000/.netlify/functions/index/']
     }
 
   },
-  apis: ['index.js']
+  apis: ['../functions/index.js']
 }
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions)
-
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
@@ -68,7 +67,7 @@ app.listen(PORT, () => {
 router.get(`${endpoint}/`, (req, res) => {
   res.status(200).send('hitting me')
 })
-router.use(`${endpoint}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+router.use(`/docs`, swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 // app.all('/*', (req, res) => {
 //   res.send('hello from' + process.pid)
 // })
@@ -87,7 +86,7 @@ router.get(`${endpoint}/l`, (req, res) => {
 *           required: true
 *
 *       description:  >
-*          This endpoint returns a particular message object based on the id that was passed as a parameter,,
+*           This endpoint returns a particular message object based on the id that was passed as a parameter,
 *           this would return a status 200 if a mesage was found and 400 if not
 *       responses:
 *         '200':
